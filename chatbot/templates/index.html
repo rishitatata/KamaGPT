@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sex Ed Chatbot</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+<body>
+    <h1>Chat with the Sex Ed Bot</h1>
+    <div id="chatbox"></div>
+    <input type="text" id="message-input" placeholder="Type your message">
+    <button id="send-button">Send</button>
+    <script>
+        const socket = io();
+        const chatbox = document.getElementById('chatbox');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value;
+            socket.emit('message', message);
+            messageInput.value = '';
+        });
+
+        socket.on('response', (data) => {
+            const messageElement = document.createElement('p');
+            messageElement.textContent = data.message;
+            chatbox.appendChild(messageElement);
+        });
+    </script>
+</body>
+</html>
